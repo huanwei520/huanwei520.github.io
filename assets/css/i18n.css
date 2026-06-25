@@ -1,5 +1,30 @@
 /* Styles for the runtime interface-language switch (see assets/js/i18n.js). */
 
+/*
+ * Zero-FOUC language display.
+ *
+ * Every translatable UI string renders BOTH variants into the DOM at build time
+ * as sibling spans: <span data-i18n-lang="en">…</span><span data-i18n-lang="zh">…</span>.
+ * The active language is chosen entirely by the [data-lang] flag that the inline
+ * <head> script in _includes/metadata-hook.html stamps onto <html> BEFORE first
+ * paint — so the very first frame shows only the selected language. No JS text
+ * replacement happens after render, hence no English→Chinese flash.
+ *
+ * Default (no/unknown data-lang) falls back to English to match the build-time
+ * `lang: en`, so the page is never blank if JS/localStorage is unavailable.
+ */
+[data-i18n-lang] {
+  display: none;
+}
+
+/* English is the default-visible language. */
+html:not([data-lang='zh']) [data-i18n-lang='en'] {
+  display: inline;
+}
+html[data-lang='zh'] [data-i18n-lang='zh'] {
+  display: inline;
+}
+
 #lang-toggle {
   display: inline-flex;
   align-items: center;

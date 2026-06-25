@@ -1,6 +1,30 @@
 <!-- A placeholder to allow defining custom metadata -->
-<!-- LOCAL OVERRIDE: load the runtime interface-language switch + its styles.
-     Chirpy renders this include at the end of <head> on every page, so this is
-     the update-safe injection point (no need to fork head.html). -->
+<!-- LOCAL OVERRIDE: runtime interface-language switch with ZERO first-paint flash (no FOUC).
+     Chirpy renders this include near the end of <head> on every page, so this is the
+     update-safe injection point (no need to fork head.html).
+
+     FOUC fix strategy (see assets/js/i18n.js + assets/css/i18n.css):
+       1. Both language variants are rendered into the DOM at build time as sibling
+          <span data-i18n-lang="en"> / <span data-i18n-lang="zh"> spans.
+       2. This SYNCHRONOUS, render-blocking <head> script reads the saved language from
+          localStorage and stamps it onto <html data-lang="..."> BEFORE <body> is parsed
+          or painted — so the very first frame already carries the correct language flag.
+       3. i18n.css hides the inactive-language spans purely by the [data-lang] attribute,
+          so the first paint shows only the chosen language (no English->Chinese flash).
+       4. assets/js/i18n.js (deferred) only wires the click toggle afterwards.
+
+     IMPORTANT: this script MUST stay inline + synchronous (no defer/async) and MUST run
+     before the body is painted; deferring it reintroduces the flash. -->
+<script>
+  (function () {
+    try {
+      var v = localStorage.getItem('ui-lang');
+      var lang = v === 'zh' || v === 'en' ? v : 'en';
+      document.documentElement.setAttribute('data-lang', lang);
+    } catch (e) {
+      document.documentElement.setAttribute('data-lang', 'en');
+    }
+  })();
+</script>
 <link rel="stylesheet" href="{{ '/assets/css/i18n.css' | relative_url }}">
 <script defer src="{{ '/assets/js/i18n.js' | relative_url }}"></script>

@@ -8,10 +8,9 @@ order: 4
 toc: false
 ---
 
-<!-- Bilingual section intro: both strings present; JS i18n toggle shows the active one. -->
-<p class="lang-section-intro">
-  <span data-i18n="section.en.intro" data-i18n-en="English-language posts." data-i18n-zh="英文文章。">English-language posts.</span>
-</p>
+<!-- Bilingual section intro: both strings rendered into the DOM; CSS (i18n.css) shows the
+     one matching html[data-lang], set synchronously in <head> before paint — so no flash. -->
+<p class="lang-section-intro" data-i18n="section.en.intro"><span data-i18n-lang="en">English-language posts.</span><span data-i18n-lang="zh">英文文章。</span></p>
 
 <div id="post-list" class="flex-grow-1 px-xl-1">
   {% assign en_posts = site.posts | where: 'lang', 'en' %}

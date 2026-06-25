@@ -10,10 +10,9 @@ order: 5
 toc: false
 ---
 
-<!-- Bilingual section intro: both strings present; JS i18n toggle shows the active one. -->
-<p class="lang-section-intro">
-  <span data-i18n="section.zh.intro" data-i18n-en="Chinese-language posts." data-i18n-zh="中文文章。">Chinese-language posts.</span>
-</p>
+<!-- Bilingual section intro: both strings rendered into the DOM; CSS (i18n.css) shows the
+     one matching html[data-lang], set synchronously in <head> before paint — so no flash. -->
+<p class="lang-section-intro" data-i18n="section.zh.intro"><span data-i18n-lang="en">Chinese-language posts.</span><span data-i18n-lang="zh">中文文章。</span></p>
 
 <div id="post-list" class="flex-grow-1 px-xl-1">
   {% assign zh_posts = site.posts | where: 'lang', 'zh-CN' %}

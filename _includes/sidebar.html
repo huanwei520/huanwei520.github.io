@@ -19,14 +19,8 @@
       {%- endif -%}
     </a>
 
-    <a class="site-title d-block" href="{{ '/' | relative_url }}"
-       data-i18n="site.title"
-       data-i18n-en="{{ site.title }}"
-       data-i18n-zh="{{ site.title_zh | default: site.title }}">{{ site.title }}</a>
-    <p class="site-subtitle fst-italic mb-0"
-       data-i18n="site.tagline"
-       data-i18n-en="{{ site.tagline }}"
-       data-i18n-zh="{{ site.tagline_zh | default: site.tagline }}">{{ site.tagline }}</p>
+    <a class="site-title d-block" href="{{ '/' | relative_url }}" data-i18n="site.title"><span data-i18n-lang="en">{{ site.title }}</span><span data-i18n-lang="zh">{{ site.title_zh | default: site.title }}</span></a>
+    <p class="site-subtitle fst-italic mb-0" data-i18n="site.tagline"><span data-i18n-lang="en">{{ site.tagline }}</span><span data-i18n-lang="zh">{{ site.tagline_zh | default: site.tagline }}</span></p>
   </header>
   <!-- .profile-wrapper -->
 
@@ -36,9 +30,7 @@
       <li class="nav-item{% if page.layout == 'home' %}{{ " active" }}{% endif %}">
         <a href="{{ '/' | relative_url }}" class="nav-link">
           <i class="fa-fw fas fa-home"></i>
-          <span data-i18n="tabs.home"
-                data-i18n-en="{{ site.data.locales['en'].tabs.home | upcase }}"
-                data-i18n-zh="{{ site.data.locales['zh-CN'].tabs.home | upcase }}">{{ site.data.locales[include.lang].tabs.home | upcase }}</span>
+          <span data-i18n="tabs.home"><span data-i18n-lang="en">{{ site.data.locales['en'].tabs.home | upcase }}</span><span data-i18n-lang="zh">{{ site.data.locales['zh-CN'].tabs.home | upcase }}</span></span>
         </a>
       </li>
       <!-- the real tabs -->
@@ -50,9 +42,7 @@
 
             {%- assign label_en = site.data.locales['en'].tabs[tab_name] | default: tab.title | upcase -%}
             {%- assign label_zh = site.data.locales['zh-CN'].tabs[tab_name] | default: tab.title_zh | default: tab.title | upcase -%}
-            <span data-i18n="tabs.{{ tab_name }}"
-                  data-i18n-en="{{ label_en }}"
-                  data-i18n-zh="{{ label_zh }}">{{ site.data.locales[include.lang].tabs.[tab_name] | default: tab.title | upcase }}</span>
+            <span data-i18n="tabs.{{ tab_name }}"><span data-i18n-lang="en">{{ label_en }}</span><span data-i18n-lang="zh">{{ label_zh }}</span></span>
           </a>
         </li>
         <!-- .nav-item -->
@@ -70,7 +60,9 @@
       title="Switch interface language / 切换界面语言"
     >
       <i class="fa-solid fa-language"></i>
-      <span id="lang-toggle-label">中文</span>
+      <!-- Label shows the language you would switch TO: active=en shows 中文, active=zh shows EN.
+           Both rendered; CSS shows the right one by html[data-lang] so it never flashes either. -->
+      <span id="lang-toggle-label"><span data-i18n-lang="en">中文</span><span data-i18n-lang="zh">EN</span></span>
     </button>
 
     <span class="icon-border"></span>
