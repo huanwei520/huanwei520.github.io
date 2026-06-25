@@ -21,7 +21,7 @@ tagline: ML systems, GPU plumbing, and homelab notes # it will display as the su
 # Chinese variants of title/tagline used by the runtime interface-language switch
 # (assets/js/i18n.js). These do NOT change the build-time language: the page is
 # still built as `lang: en`; the switch only flips the displayed UI strings.
-title_zh: huanwei 的笔记
+title_zh: 欢伪 的笔记
 tagline_zh: 机器学习系统、GPU 底层与家庭实验室笔记
 
 description: >- # used by seo meta and the atom feed
