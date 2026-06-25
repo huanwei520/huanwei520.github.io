@@ -3,6 +3,7 @@ title: "Working GPU P2P inside a VFIO passthrough VM — dual RTX 5090, 56.5 GB/
 date: 2026-06-25 19:00:00 +0800
 categories: [ML Systems, GPU Infrastructure]
 tags: [gpu, vfio, p2p, rtx5090, proxmox, nccl, deepspeed]
+lang: en
 ---
 
 > 🌏 中文版：[在 VFIO 直通虚拟机里跑通 GPU P2P —— 双 RTX 5090，56.5 GB/s，非裸机，无 ATS](/posts/gpu-p2p-vfio-passthrough-5090-zh/)

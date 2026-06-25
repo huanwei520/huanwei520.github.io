@@ -1,0 +1,24 @@
+/* Styles for the runtime interface-language switch (see assets/js/i18n.js). */
+
+#lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  padding: 0.25rem 0.45rem;
+  white-space: nowrap;
+}
+
+#lang-toggle .fa-language {
+  font-size: 1rem;
+}
+
+#lang-toggle #lang-toggle-label {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.lang-section-intro {
+  color: var(--text-muted-color, #6c757d);
+  margin-bottom: 1.25rem;
+}

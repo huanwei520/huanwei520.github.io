@@ -1,0 +1,181 @@
+<!-- The Side Bar -->
+<!--
+  LOCAL OVERRIDE of the Chirpy gem's _includes/sidebar.html.
+  Only additions vs. upstream:
+    1. data-i18n attributes on site title / tagline / nav labels so the
+       runtime interface-language switch (assets/js/i18n.js) can flip them.
+    2. A language toggle button in .sidebar-bottom (EN <-> 中文, remembered in localStorage).
+  Article sections are NOT touched here and never disappear.
+-->
+
+<aside aria-label="Sidebar" id="sidebar" class="d-flex flex-column align-items-end">
+  <header class="profile-wrapper">
+    <a href="{{ '/' | relative_url }}" id="avatar" class="rounded-circle">
+      {%- if site.avatar != empty and site.avatar -%}
+        {%- capture avatar_url -%}
+          {% include media-url.html src=site.avatar %}
+        {%- endcapture -%}
+        <img src="{{- avatar_url -}}" width="112" height="112" alt="avatar" onerror="this.style.display='none'">
+      {%- endif -%}
+    </a>
+
+    <a class="site-title d-block" href="{{ '/' | relative_url }}"
+       data-i18n="site.title"
+       data-i18n-en="{{ site.title }}"
+       data-i18n-zh="{{ site.title_zh | default: site.title }}">{{ site.title }}</a>
+    <p class="site-subtitle fst-italic mb-0"
+       data-i18n="site.tagline"
+       data-i18n-en="{{ site.tagline }}"
+       data-i18n-zh="{{ site.tagline_zh | default: site.tagline }}">{{ site.tagline }}</p>
+  </header>
+  <!-- .profile-wrapper -->
+
+  <nav class="flex-column flex-grow-1 w-100 ps-0">
+    <ul class="nav">
+      <!-- home -->
+      <li class="nav-item{% if page.layout == 'home' %}{{ " active" }}{% endif %}">
+        <a href="{{ '/' | relative_url }}" class="nav-link">
+          <i class="fa-fw fas fa-home"></i>
+          <span data-i18n="tabs.home"
+                data-i18n-en="{{ site.data.locales['en'].tabs.home | upcase }}"
+                data-i18n-zh="{{ site.data.locales['zh-CN'].tabs.home | upcase }}">{{ site.data.locales[include.lang].tabs.home | upcase }}</span>
+        </a>
+      </li>
+      <!-- the real tabs -->
+      {% for tab in site.tabs %}
+        <li class="nav-item{% if tab.url == page.url %}{{ " active" }}{% endif %}">
+          <a href="{{ tab.url | relative_url }}" class="nav-link">
+            <i class="fa-fw {{ tab.icon }}"></i>
+            {% capture tab_name %}{{ tab.url | split: '/' }}{% endcapture %}
+
+            {%- assign label_en = site.data.locales['en'].tabs[tab_name] | default: tab.title | upcase -%}
+            {%- assign label_zh = site.data.locales['zh-CN'].tabs[tab_name] | default: tab.title_zh | default: tab.title | upcase -%}
+            <span data-i18n="tabs.{{ tab_name }}"
+                  data-i18n-en="{{ label_en }}"
+                  data-i18n-zh="{{ label_zh }}">{{ site.data.locales[include.lang].tabs.[tab_name] | default: tab.title | upcase }}</span>
+          </a>
+        </li>
+        <!-- .nav-item -->
+      {% endfor %}
+    </ul>
+  </nav>
+
+  <div class="sidebar-bottom d-flex flex-wrap align-items-center w-100">
+    <!-- Interface-language toggle (EN <-> 中文). Flips UI chrome only; never hides posts. -->
+    <button
+      type="button"
+      class="btn btn-link nav-link"
+      id="lang-toggle"
+      aria-label="Switch interface language"
+      title="Switch interface language / 切换界面语言"
+    >
+      <i class="fa-solid fa-language"></i>
+      <span id="lang-toggle-label">中文</span>
+    </button>
+
+    <span class="icon-border"></span>
+
+    {% unless site.theme_mode == 'light' or site.theme_mode == 'dark' %}
+      {%- capture icon_system -%}
+        <i class="fa-solid fa-display" data-theme-mode="system"></i>
+      {%- endcapture -%}
+
+      {%- capture icon_light -%}
+        <i class="fa-regular fa-sun" data-theme-mode="light"></i>
+      {%- endcapture -%}
+
+      {%- capture icon_dark -%}
+        <i class="fa-regular fa-moon" data-theme-mode="dark"></i>
+      {%- endcapture -%}
+
+      <div class="btn-group dropup">
+        <button
+          type="button"
+          class="btn btn-link nav-link"
+          aria-label="Switch Mode"
+          id="mode-toggle"
+          data-bs-toggle="dropdown"
+        >
+          {{- icon_light -}}
+          {{- icon_dark -}}
+          {{- icon_system -}}
+        </button>
+        <ul class="dropdown-menu rounded-3 mb-1 p-1">
+          <li>
+            <button class="dropdown-item d-flex align-items-center" type="button" data-theme-mode="light">
+              {{- icon_light -}}
+              {{- site.data.locales[lang].theme.light -}}
+            </button>
+          </li>
+          <li>
+            <button class="dropdown-item d-flex align-items-center" type="button" data-theme-mode="dark">
+              {{- icon_dark -}}
+              {{- site.data.locales[lang].theme.dark -}}
+            </button>
+          </li>
+          <li>
+            <button class="dropdown-item d-flex align-items-center" type="button" data-theme-mode="system">
+              {{- icon_system -}}
+              {{- site.data.locales[lang].theme.system -}}
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      {% if site.data.contact.size > 0 %}
+        <span class="icon-border"></span>
+      {% endif %}
+    {% endunless %}
+
+    {% for entry in site.data.contact %}
+      {%- assign url = null -%}
+
+      {% case entry.type %}
+        {% when 'github', 'twitter' %}
+          {%- unless site[entry.type].username -%}
+            {%- continue -%}
+          {%- endunless -%}
+          {%- capture url -%}
+            https://{{ entry.type }}.com/{{ site[entry.type].username }}
+          {%- endcapture -%}
+        {% when 'email' %}
+          {%- unless site.social.email -%}
+            {%- continue -%}
+          {%- endunless -%}
+          {%- assign email = site.social.email | split: '@' -%}
+          {%- capture url -%}
+            javascript:void(location.href = 'mailto:' + ['{{ email[0] }}','{{ email[1] }}'].join('@'))
+          {%- endcapture -%}
+        {% when 'rss' %}
+          {% assign url = '/feed.xml' | relative_url %}
+        {% else %}
+          {% assign url = entry.url %}
+      {% endcase %}
+
+      {% if url %}
+        <a
+          href="{{ url }}"
+          aria-label="{{ entry.type }}"
+          {% assign link_types = '' %}
+
+          {% unless entry.noblank %}
+            target="_blank"
+            {% assign link_types = 'noopener noreferrer' %}
+          {% endunless %}
+
+          {% if entry.type == 'mastodon' %}
+            {% assign link_types = link_types | append: ' me' | strip %}
+          {% endif %}
+
+          {% unless link_types == empty %}
+            rel="{{ link_types }}"
+          {% endunless %}
+        >
+          <i class="{{ entry.icon }}"></i>
+        </a>
+      {% endif %}
+    {% endfor %}
+  </div>
+  <!-- .sidebar-bottom -->
+</aside>
+<!-- #sidebar -->
