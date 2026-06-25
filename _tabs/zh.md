@@ -1,9 +1,12 @@
 ---
 # Chinese posts section — always present, lists only Chinese-language posts.
-# Section display name is "欢伪" (a proper noun) in both UI locales; the lang
-# filter below (where lang == zh-CN) is unchanged and still lists Chinese posts.
-title: 欢伪
-title_zh: 欢伪
+# Section display name is a translatable language label: "Chinese" in EN UI,
+# "中文" in ZH UI — mirrors the English section in _tabs/en.md ("English" / "英文")
+# so the two language-region tabs are symmetric and follow the UI language
+# (nav reads «English · Chinese» in EN, «英文 · 中文» in ZH). The lang filter below
+# (where lang == zh-CN) is unchanged and still lists Chinese posts.
+title: Chinese
+title_zh: 中文
 layout: page
 icon: fas fa-language
 order: 5
